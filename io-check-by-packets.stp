@@ -1,0 +1,35 @@
+#!/usr/bin/env stap
+#
+# Monitor the I/O of a program.
+#
+# Usage:
+#   sudo stap io-check-by-packets.stp -x [pid]
+
+probe begin {
+  printf("%5s %1s %6s %7s %s\n",
+         "PID", "D", "BYTES", "us", "FILE")
+}
+
+probe vfs.read.return, vfs.write.return {
+  # skip other programs
+  if (pid() != target())
+    next
+
+  if (devname=="N/A")
+    next
+
+  time_delta = gettimeofday_us() - @entry(gettimeofday_us())
+  direction = name == "vfs.read" ? "R" : "W"
+
+  # If you want only the filename, use
+  // filename = kernel_string($file->f_path->dentry->d_name->name)
+  # If you want only the path from the mountpoint, use
+  // filename = devname . "," . reverse_path_walk($file->f_path->dentry)
+  # If you want the full path, use
+  filename = task_dentry_path(task_current(),
+                              $file->f_path->dentry,
+                              $file->f_path->mnt)
+
+  printf("%5d %1s %6d %7d %s\n",
+         pid(), direction, $return, time_delta, filename)
+}
