@@ -3,7 +3,7 @@
 # Monitor the I/O of a program.
 #
 # Usage:
-#   sudo stap io-check-by-packets.stp -x [pid]
+#   sudo stap io-check-by-operations.stp -x [pid]
 
 probe begin {
   printf("%5s %1s %6s %7s %s\n",
