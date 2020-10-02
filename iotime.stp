@@ -3,6 +3,9 @@
 /*
  * Slightly modified by Dan Ortega (ortega.dan2010@gmail.com) to add time
  * measuring units and how to use it by directory.
+ * (original scrip found at:
+ * https://sourceware.org/systemtap/SystemTap_Beginners_Guide/iotimesect.html#iotimeoutput
+ * by the name of iotime.stp)
  *
  * Copyright (C) 2006-2018 Red Hat Inc.
  * 
@@ -24,12 +27,13 @@
  * sudo stap iotime.stp |grep [partOfTheNameOfTheDirectoryToMonitor]
  *
  * Output format is:
- * timestamp pid (executabable) info_type path ...
+ * timestamp pid (executabable) info-type file-path ...
+
  * (read and write operations are given in bytes, and time is given in 
- * microseconds (us) which are a mili part of a mili-second)
+ * microseconds (us) which are a mili-part of a mili-second)
  *
  * 200283135 2573 (cupsd) access /etc/printcap read: 0 write: 7063
- * 200283143 2573 (cupsd) iotime /etc/printcap time: 69
+ * 200283143 2573 (cupsd) iotime /etc/printcap time: 69 us
  *
  */
 
